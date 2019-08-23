@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+        <title>some-problems</title>
+        <link href="./style.css" rel="stylesheet">
+        <body>
+            <div class='menu'>
+                <div id='menu'></div>
+
+            </div>
+            <div class="content">
+                <div style='margin-bottom: 40px;'>
+                    <pre>
+Win 10
+Chrome 76.0.3809.100	
+
+百度输入法：5.5.5034.0
+
+问题：
+
+选中"This is some text" 中的”is some“,
+
+百度输入法中文输入法下，按a,
+
+被选中文字后面的文字丢失，并且后面的段落”p“被合并到了标题中
+
+
+
+
+下面是可编辑的文本：
+                    </pre>
+                    
+                </div>
+
+                <div id='editor'  contenteditable="true" style="border:#eee solid 2px;">
+                    <h2><span>This is some text;</span></h2>
+                    <p style="padding-top:200px;">This is a paragraph</p>
+                </div>
+
+                <pre style='margin-top:20px'>
+&lt;div id=&#39;editor&#39; contenteditable=&quot;true&quot; style=&quot;border:#eee solid 2px;&quot;&gt;
+    &lt;h2&gt;&lt;span&gt;This is some text;&lt;/span&gt;&lt;/h2&gt;
+    &lt;p style=&quot;padding-top:200px;&quot;&gt;This is a paragraph&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;script&gt;
+    const editor = document.getElementById(&#39;editor&#39;);
+    editor.addEventListener(&#39;compositionstart&#39;,function(event){
+        const selection   = window.getSelection();
+        if(selection.anchorNode===selection.focusNode){
+            const str = selection.toString();
+            const index =  selection.anchorNode.nodeValue.indexOf(str);
+            const range = selection.getRangeAt(0);
+            
+            selection.anchorNode.nodeValue= selection.anchorNode.nodeValue.replace(str,&#39;&#39;);
+            selection.setBaseAndExtent(
+                selection.anchorNode,
+                
+                index,
+                selection.anchorNode,
+                index,
+            );
+        }
+        
+    },false)
+&lt;/script&gt;
+                </pre>
+            </div>
+        </body>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script src='./index.js'></script>
+        <script>
+            const editor = document.getElementById('editor');
+            editor.addEventListener('compositionstart',function(event){
+                const selection   = window.getSelection();
+                if(selection.anchorNode===selection.focusNode){
+                    const str = selection.toString();
+                    const index =  selection.anchorNode.nodeValue.indexOf(str);
+                    const range = selection.getRangeAt(0);
+                    
+                    selection.anchorNode.nodeValue= selection.anchorNode.nodeValue.replace(str,'');
+                    selection.setBaseAndExtent(
+                        selection.anchorNode,
+                       
+                        index,
+                        selection.anchorNode,
+                        index,
+                    );
+                }
+                
+            },false)
+            editor.focus()
+        </script>
+    </html>
