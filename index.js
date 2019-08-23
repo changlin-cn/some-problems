@@ -3,7 +3,7 @@ var app = new Vue({
   data: {
     pages: [
       {
-        path: "./index.html",
+        path: "./ ",
         name: "home"
       },
       {
